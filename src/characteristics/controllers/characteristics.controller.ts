@@ -2,7 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CharacteristicsService } from '../services/characteristics.service';
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
 import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Characteristics')
 @Controller('characteristics')
 export class CharacteristicsController {
   constructor(private readonly characteristicsService: CharacteristicsService) {}

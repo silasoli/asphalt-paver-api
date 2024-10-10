@@ -10,7 +10,9 @@ import {
 import { CausesService } from '../services/causes.service';
 import { CreateCauseDto } from '../dto/create-cause.dto';
 import { UpdateCauseDto } from '../dto/update-cause.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Causes')
 @Controller('causes')
 export class CausesController {
   constructor(private readonly causesService: CausesService) {}

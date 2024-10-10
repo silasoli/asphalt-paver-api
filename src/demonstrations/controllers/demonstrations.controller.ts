@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DemonstrationsService } from '../services/demonstrations.service';
 import { CreateDemonstrationDto } from '../dto/create-demonstration.dto';
 import { UpdateDemonstrationDto } from '../dto/update-demonstration.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Demonstrations')
 @Controller('demonstrations')
 export class DemonstrationsController {
   constructor(private readonly demonstrationsService: DemonstrationsService) {}

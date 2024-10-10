@@ -10,7 +10,10 @@ import {
 import { CreateSolutionDto } from '../dto/create-solution.dto';
 import { UpdateSolutionDto } from '../dto/update-solution.dto';
 import { SolutionsService } from '../services/solutions.service';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Solutions')
 @Controller('solutions')
 export class SolutionsController {
   constructor(private readonly solutionsService: SolutionsService) {}
