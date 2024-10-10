@@ -13,6 +13,5 @@ import { CharacteristicsModule } from './characteristics/characteristics.module'
     CharacteristicsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
