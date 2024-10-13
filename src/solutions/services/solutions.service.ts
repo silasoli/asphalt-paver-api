@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Solutions } from '../../database/entities/solutions.entity';
 import { CreateSolutionDto } from '../dto/create-solution.dto';
-import { UpdateSolutionDto } from '../dto/update-solution.dto';
 
 @Injectable()
 export class SolutionsService {
-  create(dto: CreateSolutionDto) {
-    return dto;
+  constructor(
+    @InjectRepository(Solutions)
+    private solutionsRepository: Repository<Solutions>,
+  ) {}
+
+  async create(createSolutionsDto: CreateSolutionDto): Promise<Solutions> {
+    const solution = this.solutionsRepository.create(createSolutionsDto);
+    return this.solutionsRepository.save(solution);
   }
 
-  findAll() {
-    return `This action returns all solutions`;
+  async findAll(): Promise<Solutions[]> {
+    return this.solutionsRepository.find();
   }
 
-  findOne(id: string) {
-    return id;
+  async findOne(id: string): Promise<Solutions> {
+    return this.solutionsRepository.findOneBy({ id });
   }
 
-  update(id: string, dto: UpdateSolutionDto) {
-    return id + `` + dto;
+  async update(
+    id: string,
+    updateSolutionsDto: Partial<CreateSolutionDto>,
+  ): Promise<void> {
+    await this.solutionsRepository.update(id, updateSolutionsDto);
   }
 
-  remove(id: string) {
-    return id;
+  async remove(id: string): Promise<void> {
+    await this.solutionsRepository.delete(id);
   }
 }

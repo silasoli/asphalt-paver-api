@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Characteristics } from '../../database/entities/characteristics.entity';
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
-import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
 
 @Injectable()
 export class CharacteristicsService {
-  create(createCharacteristicDto: CreateCharacteristicDto) {
-    return 'This action adds a new characteristic';
+  constructor(
+    @InjectRepository(Characteristics)
+    private characteristicsRepository: Repository<Characteristics>,
+  ) {}
+
+  async create(
+    createCharacteristicsDto: CreateCharacteristicDto,
+  ): Promise<Characteristics> {
+    const characteristic = this.characteristicsRepository.create(
+      createCharacteristicsDto,
+    );
+    return this.characteristicsRepository.save(characteristic);
   }
 
-  findAll() {
-    return `This action returns all characteristics`;
+  async findAll(): Promise<Characteristics[]> {
+    return this.characteristicsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} characteristic`;
+  async findOne(id: string): Promise<Characteristics> {
+    return this.characteristicsRepository.findOneBy({ id });
   }
 
-  update(id: number, updateCharacteristicDto: UpdateCharacteristicDto) {
-    return `This action updates a #${id} characteristic`;
+  async update(
+    id: string,
+    updateCharacteristicsDto: Partial<CreateCharacteristicDto>,
+  ): Promise<void> {
+    await this.characteristicsRepository.update(id, updateCharacteristicsDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} characteristic`;
+  async remove(id: string): Promise<void> {
+    await this.characteristicsRepository.delete(id);
   }
 }

@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { Demonstrations } from '../../database/entities/demonstrations.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateDemonstrationDto } from '../dto/create-demonstration.dto';
-import { UpdateDemonstrationDto } from '../dto/update-demonstration.dto';
 
 @Injectable()
 export class DemonstrationsService {
-  create(createDemonstrationDto: CreateDemonstrationDto) {
-    return 'This action adds a new demonstration';
+  constructor(
+    @InjectRepository(Demonstrations)
+    private manifestationsRepository: Repository<Demonstrations>,
+  ) {}
+
+  async create(dto: CreateDemonstrationDto): Promise<Demonstrations> {
+    const manifestation = this.manifestationsRepository.create(dto);
+    return this.manifestationsRepository.save(manifestation);
   }
 
-  findAll() {
-    return `This action returns all demonstrations`;
+  async findAll(): Promise<Demonstrations[]> {
+    return this.manifestationsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} demonstration`;
+  async findOne(id: string): Promise<Demonstrations> {
+    return this.manifestationsRepository.findOneBy({ id });
   }
 
-  update(id: number, updateDemonstrationDto: UpdateDemonstrationDto) {
-    return `This action updates a #${id} demonstration`;
+  async update(
+    id: string,
+    dto: Partial<CreateDemonstrationDto>,
+  ): Promise<void> {
+    await this.manifestationsRepository.update(id, dto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} demonstration`;
+  async remove(id: string): Promise<void> {
+    await this.manifestationsRepository.delete(id);
   }
 }
