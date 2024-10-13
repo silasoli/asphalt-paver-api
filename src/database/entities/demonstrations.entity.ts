@@ -1,11 +1,18 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Causes } from './causes.entity';
 import { Characteristics } from './characteristics.entity';
 import { Solutions } from './solutions.entity';
 
 @Entity()
 export class Demonstrations {
-  @PrimaryColumn({ type: 'char', length: 50 })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'char', length: 50, nullable: false })
@@ -22,4 +29,10 @@ export class Demonstrations {
 
   @OneToMany(() => Solutions, (solution) => solution.demonstration)
   solutions: Solutions[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

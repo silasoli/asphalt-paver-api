@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Characteristics } from '../../database/entities/characteristics.entity';
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
+import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
+import { CharacteristicResponseDto } from '../dto/characteristic-response.dto';
 
 @Injectable()
 export class CharacteristicsService {
@@ -11,31 +13,40 @@ export class CharacteristicsService {
     private characteristicsRepository: Repository<Characteristics>,
   ) {}
 
-  async create(
-    createCharacteristicsDto: CreateCharacteristicDto,
-  ): Promise<Characteristics> {
-    const characteristic = this.characteristicsRepository.create(
-      createCharacteristicsDto,
-    );
-    return this.characteristicsRepository.save(characteristic);
+  public async create(
+    dto: CreateCharacteristicDto,
+  ): Promise<CharacteristicResponseDto> {
+    const characteristic = this.characteristicsRepository.create(dto);
+
+    const created = await this.characteristicsRepository.save(characteristic);
+
+    return new CharacteristicResponseDto(created); 
   }
 
-  async findAll(): Promise<Characteristics[]> {
-    return this.characteristicsRepository.find();
+  public async findAll(): Promise<CharacteristicResponseDto[]> {
+    const characteristics = await this.characteristicsRepository.find();
+
+    return characteristics.map((item) => new CharacteristicResponseDto(item));
   }
 
-  async findOne(id: string): Promise<Characteristics> {
-    return this.characteristicsRepository.findOneBy({ id });
+  public async findOne(id: string): Promise<CharacteristicResponseDto> {
+    const item = await this.characteristicsRepository.findOneBy({
+      id,
+    });
+
+    return new CharacteristicResponseDto(item);
   }
 
-  async update(
+  public async update(
     id: string,
-    updateCharacteristicsDto: Partial<CreateCharacteristicDto>,
-  ): Promise<void> {
-    await this.characteristicsRepository.update(id, updateCharacteristicsDto);
+    dto: UpdateCharacteristicDto,
+  ): Promise<CharacteristicResponseDto> {
+    await this.characteristicsRepository.update(id, dto);
+
+    return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  public async remove(id: string): Promise<void> {
     await this.characteristicsRepository.delete(id);
   }
 }

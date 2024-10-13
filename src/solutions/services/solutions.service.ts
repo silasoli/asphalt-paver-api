@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Solutions } from '../../database/entities/solutions.entity';
 import { CreateSolutionDto } from '../dto/create-solution.dto';
+import { UpdateSolutionDto } from '../dto/update-solution.dto';
+import { SolutionResponseDto } from '../dto/solution-response.dto';
 
 @Injectable()
 export class SolutionsService {
@@ -11,27 +13,36 @@ export class SolutionsService {
     private solutionsRepository: Repository<Solutions>,
   ) {}
 
-  async create(createSolutionsDto: CreateSolutionDto): Promise<Solutions> {
-    const solution = this.solutionsRepository.create(createSolutionsDto);
-    return this.solutionsRepository.save(solution);
+  public async create(dto: CreateSolutionDto): Promise<SolutionResponseDto> {
+    const solution = this.solutionsRepository.create(dto);
+    
+    const created = await this.solutionsRepository.save(solution);
+
+    return new SolutionResponseDto(created);
   }
 
-  async findAll(): Promise<Solutions[]> {
-    return this.solutionsRepository.find();
+  public async findAll(): Promise<SolutionResponseDto[]> {
+    const solutions = await this.solutionsRepository.find();
+
+    return solutions.map((solution) => new SolutionResponseDto(solution)); 
   }
 
-  async findOne(id: string): Promise<Solutions> {
-    return this.solutionsRepository.findOneBy({ id });
+  public async findOne(id: string): Promise<SolutionResponseDto> {
+    const solution = await this.solutionsRepository.findOneBy({ id });
+
+    return new SolutionResponseDto(solution);
   }
 
-  async update(
+  public async update(
     id: string,
-    updateSolutionsDto: Partial<CreateSolutionDto>,
-  ): Promise<void> {
-    await this.solutionsRepository.update(id, updateSolutionsDto);
+    dto: UpdateSolutionDto,
+  ): Promise<SolutionResponseDto> {
+    await this.solutionsRepository.update(id, dto);
+
+    return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  public async remove(id: string): Promise<void> {
     await this.solutionsRepository.delete(id);
   }
 }

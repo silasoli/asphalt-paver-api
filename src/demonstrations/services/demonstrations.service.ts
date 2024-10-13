@@ -3,35 +3,48 @@ import { Demonstrations } from '../../database/entities/demonstrations.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDemonstrationDto } from '../dto/create-demonstration.dto';
+import { UpdateDemonstrationDto } from '../dto/update-demonstration.dto';
+import { DemonstrationResponseDto } from '../dto/demonstration-response.dto';
 
 @Injectable()
 export class DemonstrationsService {
   constructor(
     @InjectRepository(Demonstrations)
-    private manifestationsRepository: Repository<Demonstrations>,
+    private demonstrationsRepository: Repository<Demonstrations>,
   ) {}
 
-  async create(dto: CreateDemonstrationDto): Promise<Demonstrations> {
-    const manifestation = this.manifestationsRepository.create(dto);
-    return this.manifestationsRepository.save(manifestation);
+  public async create(
+    dto: CreateDemonstrationDto,
+  ): Promise<DemonstrationResponseDto> {
+    const demonstration = this.demonstrationsRepository.create(dto);
+
+    const created = await this.demonstrationsRepository.save(demonstration);
+
+    return new DemonstrationResponseDto(created);
   }
 
-  async findAll(): Promise<Demonstrations[]> {
-    return this.manifestationsRepository.find();
+  public async findAll(): Promise<DemonstrationResponseDto[]> {
+    const demonstrations = await this.demonstrationsRepository.find();
+
+    return demonstrations.map((item) => new DemonstrationResponseDto(item));
   }
 
-  async findOne(id: string): Promise<Demonstrations> {
-    return this.manifestationsRepository.findOneBy({ id });
+  public async findOne(id: string): Promise<DemonstrationResponseDto> {
+    const demonstration = await this.demonstrationsRepository.findOneBy({ id });
+
+    return new DemonstrationResponseDto(demonstration);
   }
 
-  async update(
+  public async update(
     id: string,
-    dto: Partial<CreateDemonstrationDto>,
-  ): Promise<void> {
-    await this.manifestationsRepository.update(id, dto);
+    dto: UpdateDemonstrationDto,
+  ): Promise<DemonstrationResponseDto> {
+    await this.demonstrationsRepository.update(id, dto);
+
+    return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.manifestationsRepository.delete(id);
+  public async remove(id: string): Promise<void> {
+    await this.demonstrationsRepository.delete(id);
   }
 }

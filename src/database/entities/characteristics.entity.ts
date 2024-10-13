@@ -1,9 +1,16 @@
-import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Demonstrations } from './demonstrations.entity';
 
 @Entity()
 export class Characteristics {
-  @PrimaryColumn({ type: 'char', length: 50 })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'char', length: 50, nullable: false })
@@ -15,6 +22,13 @@ export class Characteristics {
   @ManyToOne(
     () => Demonstrations,
     (demonstration) => demonstration.characteristics,
+    { onDelete: 'CASCADE' },
   )
   demonstration: Demonstrations;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
