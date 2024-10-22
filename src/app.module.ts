@@ -5,6 +5,7 @@ import { DemonstrationsModule } from './demonstrations/demonstrations.module';
 import { CausesModule } from './causes/causes.module';
 import { CharacteristicsModule } from './characteristics/characteristics.module';
 import { TypeOrmConfigModule } from './database/typeorm.module';
+import { AnalysisModule } from './analysis/analysis.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TypeOrmConfigModule } from './database/typeorm.module';
     DemonstrationsModule,
     CausesModule,
     CharacteristicsModule,
+    AnalysisModule,
   ],
   controllers: [AppController],
 })

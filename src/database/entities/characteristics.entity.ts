@@ -13,10 +13,10 @@ export class Characteristics {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'char', length: 50, nullable: false })
+  @Column({ nullable: false })
   description: string;
 
-  @Column({ type: 'char', length: 50, nullable: false })
+  @Column({ nullable: false })
   name: string;
 
   @ManyToOne(

@@ -15,7 +15,7 @@ export class Demonstrations {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'char', length: 50, nullable: false })
+  @Column({ nullable: false })
   name: string;
 
   @OneToMany(() => Causes, (cause) => cause.demonstration)

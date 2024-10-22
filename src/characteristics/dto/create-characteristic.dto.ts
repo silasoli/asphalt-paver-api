@@ -15,5 +15,5 @@ export class CreateCharacteristicDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  demonstrations_id: string;
+  demonstrationId: string;
 }
