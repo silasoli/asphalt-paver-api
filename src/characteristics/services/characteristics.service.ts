@@ -5,22 +5,32 @@ import { Characteristics } from '../../database/entities/characteristics.entity'
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
 import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
 import { CharacteristicResponseDto } from '../dto/characteristic-response.dto';
+import { Demonstrations } from '../../database/entities/demonstrations.entity';
 
 @Injectable()
 export class CharacteristicsService {
   constructor(
     @InjectRepository(Characteristics)
     private characteristicsRepository: Repository<Characteristics>,
+    @InjectRepository(Demonstrations)
+    private demonstrationsRepository: Repository<Demonstrations>,
   ) {}
 
   public async create(
     dto: CreateCharacteristicDto,
   ): Promise<CharacteristicResponseDto> {
-    const characteristic = this.characteristicsRepository.create(dto);
+    const demonstrations = await this.demonstrationsRepository.findByIds(
+      dto.demonstrationIds,
+    );
+
+    const characteristic = this.characteristicsRepository.create({
+      ...dto,
+      demonstrations,
+    });
 
     const created = await this.characteristicsRepository.save(characteristic);
 
-    return new CharacteristicResponseDto(created); 
+    return new CharacteristicResponseDto(created);
   }
 
   public async findAll(): Promise<CharacteristicResponseDto[]> {
@@ -30,7 +40,7 @@ export class CharacteristicsService {
   }
 
   public async findOne(id: string): Promise<CharacteristicResponseDto> {
-    const item = await this.characteristicsRepository.findOneBy({
+    const item = await this.characteristicsRepository.findOneByOrFail({
       id,
     });
 
@@ -46,7 +56,7 @@ export class CharacteristicsService {
     return this.findOne(id);
   }
 
-  public async remove(id: string): Promise<void> {
-    await this.characteristicsRepository.delete(id);
-  }
+  // public async remove(id: string): Promise<void> {
+  //   await this.characteristicsRepository.delete(id);
+  // }
 }

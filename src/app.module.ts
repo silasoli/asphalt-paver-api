@@ -6,9 +6,13 @@ import { CausesModule } from './causes/causes.module';
 import { CharacteristicsModule } from './characteristics/characteristics.module';
 import { TypeOrmConfigModule } from './database/typeorm.module';
 import { AnalysisModule } from './analysis/analysis.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmConfigModule,
     SolutionsModule,
     DemonstrationsModule,

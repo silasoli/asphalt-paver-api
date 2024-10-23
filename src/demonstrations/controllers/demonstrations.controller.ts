@@ -83,16 +83,16 @@ export class DemonstrationsController {
     return this.demonstrationsService.update(params.id, updateDemonstrationDto);
   }
 
-  @ApiOperation({ summary: 'Deletar uma demonstração.' })
-  @ApiNoContentResponse({
-    description: 'Demonstração deletada com sucesso',
-  })
-  @ApiNotFoundResponse({
-    description: 'Demonstração não encontrada.',
-  })
-  @HttpCode(204)
-  @Delete(':id')
-  public remove(@Param() params: IDPostgresQueryDTO): Promise<void> {
-    return this.demonstrationsService.remove(params.id);
-  }
+  // @ApiOperation({ summary: 'Deletar uma demonstração.' })
+  // @ApiNoContentResponse({
+  //   description: 'Demonstração deletada com sucesso',
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'Demonstração não encontrada.',
+  // })
+  // @HttpCode(204)
+  // @Delete(':id')
+  // public remove(@Param() params: IDPostgresQueryDTO): Promise<void> {
+  //   return this.demonstrationsService.remove(params.id);
+  // }
 }

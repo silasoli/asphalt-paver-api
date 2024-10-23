@@ -44,7 +44,7 @@ export class DemonstrationsService {
     return this.findOne(id);
   }
 
-  public async remove(id: string): Promise<void> {
-    await this.demonstrationsRepository.delete(id);
-  }
+  // public async remove(id: string): Promise<void> {
+  //   await this.demonstrationsRepository.delete(id);
+  // }
 }

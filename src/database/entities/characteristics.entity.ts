@@ -5,6 +5,8 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Demonstrations } from './demonstrations.entity';
 
@@ -19,12 +21,12 @@ export class Characteristics {
   @Column({ nullable: false })
   name: string;
 
-  @ManyToOne(
+  @ManyToMany(
     () => Demonstrations,
     (demonstration) => demonstration.characteristics,
-    { onDelete: 'CASCADE' },
   )
-  demonstration: Demonstrations;
+  @JoinTable() 
+  demonstrations: Demonstrations[];
 
   @CreateDateColumn()
   createdAt: Date;

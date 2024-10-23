@@ -85,16 +85,16 @@ export class CharacteristicsController {
     return this.characteristicsService.update(params.id, dto);
   }
 
-  @ApiOperation({ summary: 'Deletar uma característica.' })
-  @ApiNoContentResponse({
-    description: 'Característica deletada com sucesso',
-  })
-  @ApiNotFoundResponse({
-    description: 'Característica não encontrada.',
-  })
-  @HttpCode(204)
-  @Delete(':id')
-  public remove(@Param() params: IDPostgresQueryDTO): Promise<void> {
-    return this.characteristicsService.remove(params.id);
-  }
+  // @ApiOperation({ summary: 'Deletar uma característica.' })
+  // @ApiNoContentResponse({
+  //   description: 'Característica deletada com sucesso',
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'Característica não encontrada.',
+  // })
+  // @HttpCode(204)
+  // @Delete(':id')
+  // public remove(@Param() params: IDPostgresQueryDTO): Promise<void> {
+  //   return this.characteristicsService.remove(params.id);
+  // }
 }

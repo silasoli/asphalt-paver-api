@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsUUID } from 'class-validator';
 
 export class CreateCharacteristicDto {
   @ApiProperty()
@@ -12,8 +12,8 @@ export class CreateCharacteristicDto {
   @IsNotEmpty()
   description: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  demonstrationId: string;
+  @ApiProperty({ type: [String] })
+  @IsArray()
+  @IsUUID('all', { each: true })
+  demonstrationIds: string[];
 }

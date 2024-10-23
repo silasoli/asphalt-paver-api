@@ -5,6 +5,8 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Causes } from './causes.entity';
 import { Characteristics } from './characteristics.entity';
@@ -21,9 +23,9 @@ export class Demonstrations {
   @OneToMany(() => Causes, (cause) => cause.demonstration)
   causes: Causes[];
 
-  @OneToMany(
+  @ManyToMany(
     () => Characteristics,
-    (characteristic) => characteristic.demonstration,
+    (characteristic) => characteristic.demonstrations,
   )
   characteristics: Characteristics[];
 

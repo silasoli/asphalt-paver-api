@@ -3,9 +3,16 @@ import { Characteristics } from '../../database/entities/characteristics.entity'
 
 export class CharacteristicResponseDto {
   constructor(entity: Characteristics) {
-    const { id, name, description, createdAt, updatedAt } = entity;
-
-    return { id, name, description, createdAt, updatedAt };
+    const { id, name, description, demonstrations } = entity;
+    return {
+      id,
+      name,
+      description,
+      // demonstrations: demonstrations.map((demo) => ({
+      //   id: demo.id,
+      //   name: demo.name,
+      // })),
+    };
   }
 
   @ApiProperty()
@@ -17,9 +24,6 @@ export class CharacteristicResponseDto {
   @ApiProperty()
   description: string;
 
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
+  // @ApiProperty({ type: () => [{ id: String, name: String }] })
+  // demonstrations: any[];
 }
