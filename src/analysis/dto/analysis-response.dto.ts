@@ -3,40 +3,23 @@ import { Analysis } from '../../database/entities/analysis.entity';
 
 export class AnalysisResponseDto {
   constructor(entity: Analysis) {
-    Object.assign(this, entity);
+    const { id, demostration, postalCode, address, createdAt } = entity;
+
+    return { id, demostration, postalCode, address, createdAt };
   }
 
   @ApiProperty()
   id: string;
 
   @ApiProperty()
-  address: string;
-
-  @ApiProperty()
-  addressNumber: string;
-
-  @ApiProperty()
-  complement: string;
-
-  @ApiProperty()
-  city: string;
-
-  @ApiProperty()
-  state: string;
+  demostration?: string;
 
   @ApiProperty()
   postalCode: string;
 
   @ApiProperty()
-  demostration?: string;
-
-  //   @Column('simple-array')
-  @ApiProperty()
-  characteristicIds: string[];
+  address: string;
 
   @ApiProperty()
   createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
 }

@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { CreateAnalysisDto } from '../dto/create-analysis.dto';
 import { Analysis } from '../../database/entities/analysis.entity';
 import { Repository } from 'typeorm';
@@ -7,6 +6,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DemoRating } from '../types/findTopManifestations.types';
 import { AnalysisResponseDto } from '../dto/analysis-response.dto';
 import { UpdateAnalysisDto } from '../dto/update-analysis.dto';
+import { CreateAnalysisResponseDto } from '../dto/create-analysis-response.dto';
+import { SetDemostrationDto } from '../dto/set-demostration.dto';
+import { ANALYSIS_ERRORS } from '../constants/analysis.errors';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AnalysisService {
@@ -26,7 +29,7 @@ export class AnalysisService {
         'characteristics_demonstrations_demonstrations',
         'dc',
         'dc."demonstrationsId" = d.id',
-      ) 
+      )
       .innerJoin('characteristics', 'c', 'c.id = dc."characteristicsId"')
       .where('c.id IN (:...characteristicIds)', { characteristicIds })
       .groupBy('d.id, d.name')
@@ -56,16 +59,15 @@ export class AnalysisService {
     };
   }
 
-  public async createAnalysis(dto: CreateAnalysisDto): Promise<any> {
+  public async createAnalysis(
+    dto: CreateAnalysisDto,
+  ): Promise<CreateAnalysisResponseDto> {
     const analysis = this.analysisRepository.create(dto);
     await this.analysisRepository.save(analysis);
 
     const result = await this.demoRating(dto.characteristicIds);
 
-    return {
-      analysis,
-      top3Manifestations: result,
-    };
+    return new CreateAnalysisResponseDto(analysis, result);
   }
 
   public async findAll(): Promise<AnalysisResponseDto[]> {
@@ -82,6 +84,22 @@ export class AnalysisService {
     return new AnalysisResponseDto(item);
   }
 
+
+  public async setDemostration(
+    id: string,
+    dto: SetDemostrationDto,
+  ): Promise<AnalysisResponseDto> {
+    const item = await this.findOne(id);
+
+    if (item.demostration) ANALYSIS_ERRORS.DEMO_SELECTED;
+
+    await this.analysisRepository.update(id, {
+      demostration: dto.demostration,
+    });
+
+    return this.findOne(id);
+  }
+
   public async update(
     id: string,
     dto: UpdateAnalysisDto,
@@ -92,7 +110,6 @@ export class AnalysisService {
   }
 
   public async remove(id: string): Promise<void> {
-    await this.findOne(id);
     await this.analysisRepository.delete(id);
   }
 }

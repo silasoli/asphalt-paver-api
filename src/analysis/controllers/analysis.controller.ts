@@ -1,10 +1,32 @@
-import { Controller, Post, Body, HttpCode, Delete, Param, Patch, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  Delete,
+  Param,
+  Patch,
+  Get,
+  Put,
+} from '@nestjs/common';
 import { CreateAnalysisDto } from '../dto/create-analysis.dto';
 import { AnalysisService } from '../services/analysis.service';
-import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
 import { UpdateAnalysisDto } from '../dto/update-analysis.dto';
 import { AnalysisResponseDto } from '../dto/analysis-response.dto';
+import { CreateAnalysisResponseDto } from '../dto/create-analysis-response.dto';
+import { SetDemostrationDto } from '../dto/set-demostration.dto';
+import { ANALYSIS_ERRORS } from '../constants/analysis.errors';
 
 @ApiTags('Analysis')
 @Controller('analysis')
@@ -15,9 +37,13 @@ export class AnalysisController {
   @ApiCreatedResponse({
     description:
       'Análise criada e resultado das manifestações retornado com sucesso',
+    type: CreateAnalysisResponseDto,
   })
+  @ApiBody({ type: CreateAnalysisDto })
   @Post()
-  public async create(@Body() dto: CreateAnalysisDto) {
+  public async create(
+    @Body() dto: CreateAnalysisDto,
+  ): Promise<CreateAnalysisResponseDto> {
     return this.analysisService.createAnalysis(dto);
   }
 
@@ -61,6 +87,23 @@ export class AnalysisController {
     @Body() dto: UpdateAnalysisDto,
   ): Promise<AnalysisResponseDto> {
     return this.analysisService.update(params.id, dto);
+  }
+
+  @ApiOperation({ summary: 'Setar demostração.' })
+  @ApiOkResponse({
+    description: 'Demostração setada com com sucesso',
+    type: AnalysisResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: ANALYSIS_ERRORS.DEMO_SELECTED.message,
+  })
+  @ApiBody({ type: SetDemostrationDto })
+  @Put(':id')
+  public setDemostration(
+    @Param() params: IDPostgresQueryDTO,
+    @Body() dto: SetDemostrationDto,
+  ): Promise<AnalysisResponseDto> {
+    return this.analysisService.setDemostration(params.id, dto);
   }
 
   @ApiOperation({ summary: 'Deletar uma analise.' })
