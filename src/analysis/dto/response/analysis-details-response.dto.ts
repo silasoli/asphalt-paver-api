@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Analysis } from '../../../database/entities/analysis.entity';
-import { DemoRatingDto, DemoRatingObjDto } from './create-analysis-response.dto';
+import {
+  DemoRatingDto,
+  DemoRatingObjDto,
+} from './create-analysis-response.dto';
 
 export class AnalysisDetailsResponseDto {
   constructor(entity: Analysis) {
