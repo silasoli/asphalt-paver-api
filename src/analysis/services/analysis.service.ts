@@ -26,7 +26,6 @@ export class AnalysisService {
   ) {}
 
   private async demoRating(characteristicIds: string[]): Promise<DemoRating> {
-    //s salvar retorno
     const data = await this.demonstrationsRepository
       .createQueryBuilder('d')
       .select(['d.id', 'd.name'])
@@ -108,16 +107,13 @@ export class AnalysisService {
     dto: SetDemostrationDto,
   ): Promise<AnalysisResponseDto> {
     const item = await this.findOne(id);
-
     if (item.demostration) ANALYSIS_ERRORS.DEMO_SELECTED;
 
     const demostration = this.findDemoById(item.demoRating, dto.demostration);
-
     if (!demostration) ANALYSIS_ERRORS.DEMO_NOT_SELECTED;
 
-
     await this.analysisRepository.update(id, {
-      demostration: demostration,
+      demostration,
     });
 
     return this.findOne(id);
