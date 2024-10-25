@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Analysis } from '../../database/entities/analysis.entity';
-import { DemoRating } from '../types/findTopManifestations.types';
+import { Analysis } from '../../../database/entities/analysis.entity';
+import { DemoRating } from '../../types/findTopManifestations.types';
 
-class DemoRatingObjDto {
+export class DemoRatingObjDto {
   @ApiProperty()
   demonstrationsId: string;
 
@@ -10,7 +10,7 @@ class DemoRatingObjDto {
   name: string;
 }
 
-class DemoRatingDto {
+export class DemoRatingDto {
   @ApiProperty()
   first: DemoRatingObjDto | null;
   @ApiProperty()
@@ -49,7 +49,7 @@ export class CreateAnalysisResponseDto {
   demostration?: string;
 
   @ApiProperty({ type: DemoRatingDto })
-  result: DemoRatingDto;
+  demoRating: DemoRatingDto;
 
   //   @Column('simple-array')
   @ApiProperty()

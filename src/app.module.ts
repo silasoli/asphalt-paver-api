@@ -7,6 +7,8 @@ import { CharacteristicsModule } from './characteristics/characteristics.module'
 import { TypeOrmConfigModule } from './database/typeorm.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { ConfigModule } from '@nestjs/config';
+import { ViacepModule } from './viacep/viacep.module';
+import { CloudFlareModule } from './cloud-flare/cloud-flare.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ConfigModule } from '@nestjs/config';
     CausesModule,
     CharacteristicsModule,
     AnalysisModule,
+    ViacepModule,
+    CloudFlareModule,
   ],
   controllers: [AppController],
 })

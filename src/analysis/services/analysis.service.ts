@@ -4,12 +4,17 @@ import { Repository } from 'typeorm';
 import { Demonstrations } from '../../database/entities/demonstrations.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DemoRating } from '../types/findTopManifestations.types';
-import { AnalysisResponseDto } from '../dto/analysis-response.dto';
 import { UpdateAnalysisDto } from '../dto/update-analysis.dto';
-import { CreateAnalysisResponseDto } from '../dto/create-analysis-response.dto';
 import { SetDemostrationDto } from '../dto/set-demostration.dto';
 import { ANALYSIS_ERRORS } from '../constants/analysis.errors';
 import { Injectable } from '@nestjs/common';
+import { AnalysisResponseDto } from '../dto/response/analysis-response.dto';
+import {
+  CreateAnalysisResponseDto,
+  DemoRatingDto,
+  DemoRatingObjDto,
+} from '../dto/response/create-analysis-response.dto';
+import { AnalysisDetailsResponseDto } from '../dto/response/analysis-details-response.dto';
 
 @Injectable()
 export class AnalysisService {
@@ -62,28 +67,41 @@ export class AnalysisService {
   public async createAnalysis(
     dto: CreateAnalysisDto,
   ): Promise<CreateAnalysisResponseDto> {
-    const analysis = this.analysisRepository.create(dto);
+    const demoRating = await this.demoRating(dto.characteristicIds);
+
+    const analysis = this.analysisRepository.create({ ...dto, demoRating });
     await this.analysisRepository.save(analysis);
 
-    const result = await this.demoRating(dto.characteristicIds);
-
-    return new CreateAnalysisResponseDto(analysis, result);
+    return new CreateAnalysisResponseDto(analysis, demoRating);
   }
 
   public async findAll(): Promise<AnalysisResponseDto[]> {
-    const characteristics = await this.analysisRepository.find();
+    const analysis = await this.analysisRepository.find();
 
-    return characteristics.map((item) => new AnalysisResponseDto(item));
+    return analysis.map((item) => new AnalysisResponseDto(item));
   }
 
-  public async findOne(id: string): Promise<AnalysisResponseDto> {
+  public async findOne(id: string): Promise<AnalysisDetailsResponseDto> {
     const item = await this.analysisRepository.findOneByOrFail({
       id,
     });
 
-    return new AnalysisResponseDto(item);
+    return new AnalysisDetailsResponseDto(item);
   }
 
+  findDemoById(
+    demoRatingDto: DemoRatingDto,
+    id: string,
+  ): DemoRatingObjDto | null {
+    const properties = ['first', 'second', 'third'];
+
+    for (const prop of properties) {
+      if (demoRatingDto[prop as keyof DemoRatingDto]?.demonstrationsId === id) {
+        return demoRatingDto[prop as keyof DemoRatingDto];
+      }
+    }
+    return null;
+  }
 
   public async setDemostration(
     id: string,
@@ -93,8 +111,13 @@ export class AnalysisService {
 
     if (item.demostration) ANALYSIS_ERRORS.DEMO_SELECTED;
 
+    const demostration = this.findDemoById(item.demoRating, dto.demostration);
+
+    if (!demostration) ANALYSIS_ERRORS.DEMO_NOT_SELECTED;
+
+
     await this.analysisRepository.update(id, {
-      demostration: dto.demostration,
+      demostration: demostration,
     });
 
     return this.findOne(id);

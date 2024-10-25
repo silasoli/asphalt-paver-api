@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Analysis } from '../../database/entities/analysis.entity';
+import { Analysis } from '../../../database/entities/analysis.entity';
+import { DemoRatingObjDto } from './create-analysis-response.dto';
 
 export class AnalysisResponseDto {
   constructor(entity: Analysis) {
@@ -12,7 +13,7 @@ export class AnalysisResponseDto {
   id: string;
 
   @ApiProperty()
-  demostration?: string;
+  demostration?: DemoRatingObjDto;
 
   @ApiProperty()
   postalCode: string;

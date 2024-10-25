@@ -23,10 +23,11 @@ import {
 } from '@nestjs/swagger';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
 import { UpdateAnalysisDto } from '../dto/update-analysis.dto';
-import { AnalysisResponseDto } from '../dto/analysis-response.dto';
-import { CreateAnalysisResponseDto } from '../dto/create-analysis-response.dto';
 import { SetDemostrationDto } from '../dto/set-demostration.dto';
 import { ANALYSIS_ERRORS } from '../constants/analysis.errors';
+import { AnalysisResponseDto } from '../dto/response/analysis-response.dto';
+import { CreateAnalysisResponseDto } from '../dto/response/create-analysis-response.dto';
+import { AnalysisDetailsResponseDto } from '../dto/response/analysis-details-response.dto';
 
 @ApiTags('Analysis')
 @Controller('analysis')
@@ -60,7 +61,7 @@ export class AnalysisController {
   @ApiOperation({ summary: 'Obter característica por ID' })
   @ApiOkResponse({
     description: 'Característica retornada com sucesso',
-    type: AnalysisResponseDto,
+    type: AnalysisDetailsResponseDto,
   })
   @ApiNotFoundResponse({
     description: 'Característica não encontrada.',
@@ -68,7 +69,7 @@ export class AnalysisController {
   @Get(':id')
   public findOne(
     @Param() params: IDPostgresQueryDTO,
-  ): Promise<AnalysisResponseDto> {
+  ): Promise<AnalysisDetailsResponseDto> {
     return this.analysisService.findOne(params.id);
   }
 
