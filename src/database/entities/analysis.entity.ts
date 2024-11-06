@@ -13,6 +13,9 @@ export class Analysis {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column('simple-array', { nullable: true })
+  images: string[];
+
   @Column()
   address: string;
 

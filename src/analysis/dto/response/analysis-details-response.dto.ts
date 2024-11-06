@@ -7,14 +7,32 @@ import {
 
 export class AnalysisDetailsResponseDto {
   constructor(entity: Analysis) {
-    const { id, demostration, demoRating, postalCode, address, createdAt } =
-      entity;
+    const {
+      id,
+      images,
+      demostration,
+      demoRating,
+      postalCode,
+      address,
+      createdAt,
+    } = entity;
 
-    return { id, demostration, demoRating, postalCode, address, createdAt };
+    return {
+      id,
+      images,
+      demostration,
+      demoRating,
+      postalCode,
+      address,
+      createdAt,
+    };
   }
 
   @ApiProperty()
   id: string;
+
+  @ApiProperty({ required: true })
+  images: string[];
 
   @ApiProperty()
   demostration?: DemoRatingObjDto;

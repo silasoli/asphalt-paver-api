@@ -4,13 +4,16 @@ import { DemoRatingObjDto } from './create-analysis-response.dto';
 
 export class AnalysisResponseDto {
   constructor(entity: Analysis) {
-    const { id, demostration, postalCode, address, createdAt } = entity;
+    const { id, images, demostration, postalCode, address, createdAt } = entity;
 
-    return { id, demostration, postalCode, address, createdAt };
+    return { id, images, demostration, postalCode, address, createdAt };
   }
 
   @ApiProperty()
   id: string;
+
+  @ApiProperty({ required: true })
+  images: string[];
 
   @ApiProperty()
   demostration?: DemoRatingObjDto;

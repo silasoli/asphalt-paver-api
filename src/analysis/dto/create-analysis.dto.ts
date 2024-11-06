@@ -1,8 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsPostalCode, IsString, IsUUID } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsOptional,
+  IsPostalCode,
+  IsString,
+  IsUrl,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateAnalysisDto {
-  //s add imagems
+  @IsOptional()
+  @ApiProperty()
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsUrl({}, { each: true })
+  images?: string[];
+
   @ApiProperty({ required: true, example: '01001-000' })
   @IsPostalCode('BR')
   postalCode: string;
