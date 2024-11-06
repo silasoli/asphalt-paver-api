@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { AllExceptionsFilter } from './common/exception-filters/http-exception.filter';
 import { TypeORMExceptionFilter } from './common/exception-filters/typeorm-exception.filter';
 import { EntityNotFoundExceptionFilter } from './common/exception-filters/entity-not-found-exception.filter';
+import { HashAuthInterceptor } from './common/interceptors/hash-auth.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,7 @@ async function bootstrap() {
     new EntityNotFoundExceptionFilter(),
   );
 
+  app.useGlobalInterceptors(new HashAuthInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Asphalt Paver API')

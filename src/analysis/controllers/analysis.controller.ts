@@ -13,6 +13,7 @@ import { CreateAnalysisDto } from '../dto/create-analysis.dto';
 import { AnalysisService } from '../services/analysis.service';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -29,6 +30,7 @@ import { AnalysisResponseDto } from '../dto/response/analysis-response.dto';
 import { CreateAnalysisResponseDto } from '../dto/response/create-analysis-response.dto';
 import { AnalysisDetailsResponseDto } from '../dto/response/analysis-details-response.dto';
 
+@ApiBearerAuth()
 @ApiTags('Analysis')
 @Controller('analysis')
 export class AnalysisController {
