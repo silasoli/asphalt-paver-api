@@ -12,6 +12,7 @@ import { CharacteristicsService } from '../services/characteristics.service';
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
 import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -23,6 +24,7 @@ import {
 import { CharacteristicResponseDto } from '../dto/characteristic-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
 
+@ApiBearerAuth()
 @ApiTags('Characteristics')
 @Controller('characteristics')
 export class CharacteristicsController {

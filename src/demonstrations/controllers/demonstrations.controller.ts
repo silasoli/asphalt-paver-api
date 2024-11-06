@@ -12,6 +12,7 @@ import { DemonstrationsService } from '../services/demonstrations.service';
 import { CreateDemonstrationDto } from '../dto/create-demonstration.dto';
 import { UpdateDemonstrationDto } from '../dto/update-demonstration.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -23,6 +24,7 @@ import {
 import { DemonstrationResponseDto } from '../dto/demonstration-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
 
+@ApiBearerAuth()
 @ApiTags('Demonstrations')
 @Controller('demonstrations')
 export class DemonstrationsController {

@@ -1,9 +1,10 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ViacepService } from '../services/viacep.service';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PostalCodeQueryDTO } from '../dto/postal-code-query.dto';
 import { FindByPostalCodeResponseDto } from '../dto/postal-code-respnse.dto';
 
+@ApiBearerAuth()
 @ApiTags('Via Cep')
 @Controller('viacep')
 export class ViacepController {

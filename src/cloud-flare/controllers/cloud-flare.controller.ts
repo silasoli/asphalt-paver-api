@@ -8,6 +8,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -21,6 +22,7 @@ import { CLOUD_FLARE_ERRORS } from '../constants/cloud-flare.errors';
 import { UploadImgCloudFlareResponseDto } from '../dto/update-img-cloud-flare-response.dto';
 import { IDQueryDTO } from '../../common/dto/id-query.dto';
 
+@ApiBearerAuth()
 @ApiTags('Images')
 @Controller('image')
 export class CloudFlareController {

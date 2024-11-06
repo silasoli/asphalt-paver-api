@@ -12,6 +12,7 @@ import { CreateSolutionDto } from '../dto/create-solution.dto';
 import { UpdateSolutionDto } from '../dto/update-solution.dto';
 import { SolutionsService } from '../services/solutions.service';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -23,6 +24,7 @@ import {
 import { SolutionResponseDto } from '../dto/solution-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
 
+@ApiBearerAuth()
 @ApiTags('Solutions')
 @Controller('solutions')
 export class SolutionsController {

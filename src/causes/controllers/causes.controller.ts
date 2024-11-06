@@ -12,6 +12,7 @@ import { CausesService } from '../services/causes.service';
 import { CreateCauseDto } from '../dto/create-cause.dto';
 import { UpdateCauseDto } from '../dto/update-cause.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -22,7 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { CauseResponseDto } from '../dto/cause-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
-
+@ApiBearerAuth()
 @ApiTags('Causes')
 @Controller('causes')
 export class CausesController {
