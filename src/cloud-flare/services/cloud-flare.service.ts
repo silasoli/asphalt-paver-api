@@ -14,8 +14,8 @@ import { UploadImageResponse } from '../types/cloud-flare.types';
 export class CloudFlareService {
   private readonly logger = new Logger(CloudFlareService.name);
 
-  accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-  apiKey = `Bearer ${process.env.CLOUDFLARE_API_KEY}`;
+  private readonly accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  private readonly apiToken = `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`;
 
   constructor(private readonly httpService: HttpService) {}
 
@@ -26,7 +26,7 @@ export class CloudFlareService {
       throw CLOUD_FLARE_ERRORS.INVALID_IMAGE;
 
     // const maxSize = 10 * 1024 * 1024;
-    const maxSize = 4 * 1024 * 1024; // 4 MB
+    const maxSize = 10 * 1024 * 1024; // 10 MB
 
     if (file.size > maxSize) throw CLOUD_FLARE_ERRORS.INVALID_SIZE;
   }
@@ -51,7 +51,7 @@ export class CloudFlareService {
   //         {
   //           headers: {
   //             ...formData.getHeaders(),
-  //             Authorization: this.apiKey,
+  //             Authorization: this.apiToken,
   //           },
   //         },
   //       ),
@@ -86,7 +86,7 @@ export class CloudFlareService {
           {
             headers: {
               ...formData.getHeaders(),
-              Authorization: this.apiKey,
+              Authorization: this.apiToken,
             },
           },
         ),
@@ -96,6 +96,7 @@ export class CloudFlareService {
 
       return new UploadImgCloudFlareResponseDto(data);
     } catch (error) {
+      // console.log(error.response.data);
       this.logger.error('Erro ao fazer upload da imagem:', error.message);
       throw CLOUD_FLARE_ERRORS.UPLOAD_IMAGE;
     }
@@ -108,7 +109,7 @@ export class CloudFlareService {
           `https://api.cloudflare.com/client/v4/accounts/${this.accountId}/images/v1/${id}`,
           {
             headers: {
-              Authorization: this.apiKey,
+              Authorization: this.apiToken,
             },
           },
         ),
