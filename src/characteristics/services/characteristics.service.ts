@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Characteristics } from '../../database/entities/characteristics.entity';
 import { CreateCharacteristicDto } from '../dto/create-characteristic.dto';
 import { UpdateCharacteristicDto } from '../dto/update-characteristic.dto';
@@ -35,6 +35,16 @@ export class CharacteristicsService {
 
   public async findAll(): Promise<CharacteristicResponseDto[]> {
     const characteristics = await this.characteristicsRepository.find();
+
+    return characteristics.map((item) => new CharacteristicResponseDto(item));
+  }
+
+  public async findCaracteristicByIds(
+    ids: string[],
+  ): Promise<CharacteristicResponseDto[]> {
+    const characteristics = await this.characteristicsRepository.find({
+      where: { id: In(ids) },
+    });
 
     return characteristics.map((item) => new CharacteristicResponseDto(item));
   }

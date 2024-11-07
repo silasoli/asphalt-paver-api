@@ -9,5 +9,6 @@ import { Demonstrations } from '../database/entities/demonstrations.entity';
   imports: [TypeOrmModule.forFeature([Characteristics, Demonstrations])],
   controllers: [CharacteristicsController],
   providers: [CharacteristicsService],
+  exports: [CharacteristicsService],
 })
 export class CharacteristicsModule {}

@@ -29,6 +29,7 @@ import { ANALYSIS_ERRORS } from '../constants/analysis.errors';
 import { AnalysisResponseDto } from '../dto/response/analysis-response.dto';
 import { CreateAnalysisResponseDto } from '../dto/response/create-analysis-response.dto';
 import { AnalysisDetailsResponseDto } from '../dto/response/analysis-details-response.dto';
+import { CharacteristicResponseDto } from '../../characteristics/dto/characteristic-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('Analysis')
@@ -50,9 +51,9 @@ export class AnalysisController {
     return this.analysisService.createAnalysis(dto);
   }
 
-  @ApiOperation({ summary: 'Obter listagem de características' })
+  @ApiOperation({ summary: 'Obter listagem de análises' })
   @ApiOkResponse({
-    description: 'Listagem de características retornadas com sucesso',
+    description: 'Listagem de análises retornadas com sucesso',
     type: [AnalysisResponseDto],
   })
   @Get()
@@ -60,13 +61,13 @@ export class AnalysisController {
     return this.analysisService.findAll();
   }
 
-  @ApiOperation({ summary: 'Obter característica por ID' })
+  @ApiOperation({ summary: 'Obter análises por ID' })
   @ApiOkResponse({
-    description: 'Característica retornada com sucesso',
+    description: 'análise retornada com sucesso',
     type: AnalysisDetailsResponseDto,
   })
   @ApiNotFoundResponse({
-    description: 'Característica não encontrada.',
+    description: 'análise não encontrada.',
   })
   @Get(':id')
   public findOne(
@@ -75,13 +76,28 @@ export class AnalysisController {
     return this.analysisService.findOne(params.id);
   }
 
-  @ApiOperation({ summary: 'Editar característica.' })
+  @ApiOperation({ summary: 'Obter características de uma análises por ID' })
   @ApiOkResponse({
-    description: 'Edição de característica realizada com sucesso',
+    description: 'Características de uma análise retornadas com sucesso',
+    type: [CharacteristicResponseDto],
+  })
+  @ApiNotFoundResponse({
+    description: 'Análise não encontrada.',
+  })
+  @Get(':id/characteristics')
+  public findCaracteristicByAnalysis(
+    @Param() params: IDPostgresQueryDTO,
+  ): Promise<CharacteristicResponseDto[]> {
+    return this.analysisService.findCaracteristicByAnalysis(params.id);
+  }
+
+  @ApiOperation({ summary: 'Editar análises.' })
+  @ApiOkResponse({
+    description: 'Edição de análises realizada com sucesso',
     type: AnalysisResponseDto,
   })
   @ApiNotFoundResponse({
-    description: 'Característica não encontrada.',
+    description: 'análises não encontrada.',
   })
   @ApiBody({ type: UpdateAnalysisDto })
   @Patch(':id')

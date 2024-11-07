@@ -15,6 +15,8 @@ import {
   DemoRatingObjDto,
 } from '../dto/response/create-analysis-response.dto';
 import { AnalysisDetailsResponseDto } from '../dto/response/analysis-details-response.dto';
+import { CharacteristicsService } from '../../characteristics/services/characteristics.service';
+import { CharacteristicResponseDto } from '../../characteristics/dto/characteristic-response.dto';
 
 @Injectable()
 export class AnalysisService {
@@ -23,6 +25,7 @@ export class AnalysisService {
     private analysisRepository: Repository<Analysis>,
     @InjectRepository(Demonstrations)
     private demonstrationsRepository: Repository<Demonstrations>,
+    private readonly characteristicsService: CharacteristicsService,
   ) {}
 
   private async demoRating(characteristicIds: string[]): Promise<DemoRating> {
@@ -91,6 +94,18 @@ export class AnalysisService {
     });
 
     return new AnalysisDetailsResponseDto(item);
+  }
+
+  public async findCaracteristicByAnalysis(
+    id: string,
+  ): Promise<CharacteristicResponseDto[]> {
+    const item = await this.analysisRepository.findOneByOrFail({
+      id,
+    });
+
+    return this.characteristicsService.findCaracteristicByIds(
+      item.characteristicIds,
+    );
   }
 
   findDemoById(

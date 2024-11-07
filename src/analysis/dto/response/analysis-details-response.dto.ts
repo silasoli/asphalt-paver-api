@@ -12,6 +12,7 @@ export class AnalysisDetailsResponseDto {
       images,
       demostration,
       demoRating,
+      characteristicIds,
       postalCode,
       address,
       createdAt,
@@ -22,6 +23,7 @@ export class AnalysisDetailsResponseDto {
       images,
       demostration,
       demoRating,
+      characteristicIds,
       postalCode,
       address,
       createdAt,
@@ -39,6 +41,9 @@ export class AnalysisDetailsResponseDto {
 
   @ApiProperty({ type: DemoRatingDto })
   demoRating: DemoRatingDto;
+
+  @ApiProperty()
+  characteristicIds: string[];
 
   @ApiProperty()
   postalCode: string;
