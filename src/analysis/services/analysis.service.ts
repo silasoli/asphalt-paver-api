@@ -83,7 +83,9 @@ export class AnalysisService {
   }
 
   public async findAll(): Promise<AnalysisResponseDto[]> {
-    const analysis = await this.analysisRepository.find();
+    const analysis = await this.analysisRepository.find({
+      order: { createdAt: 'DESC' },
+    });
 
     return analysis.map((item) => new AnalysisResponseDto(item));
   }
