@@ -68,7 +68,12 @@ export class AnalysisService {
   ): Promise<CreateAnalysisResponseDto> {
     const demoRating = await this.demoRating(dto.characteristicIds);
 
-    const analysis = this.analysisRepository.create({ ...dto, demoRating });
+    const analysis = this.analysisRepository.create({
+      ...dto,
+      demoRating,
+      demostration: demoRating.first,
+      //remover isso depois e fazer o usuario escolher a demonstração
+    });
     await this.analysisRepository.save(analysis);
 
     return new CreateAnalysisResponseDto(analysis, demoRating);
