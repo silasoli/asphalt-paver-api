@@ -15,6 +15,10 @@ export class AnalysisDetailsResponseDto {
       characteristicIds,
       postalCode,
       address,
+      addressNumber,
+      city,
+      complement,
+      state,
       createdAt,
     } = entity;
 
@@ -26,6 +30,10 @@ export class AnalysisDetailsResponseDto {
       characteristicIds,
       postalCode,
       address,
+      addressNumber,
+      city,
+      complement,
+      state,
       createdAt,
     };
   }
@@ -48,8 +56,19 @@ export class AnalysisDetailsResponseDto {
   @ApiProperty()
   postalCode: string;
 
-  @ApiProperty()
   address: string;
+
+  @ApiProperty()
+  addressNumber: string;
+
+  @ApiProperty()
+  complement: string;
+
+  @ApiProperty()
+  city: string;
+
+  @ApiProperty()
+  state: string;
 
   @ApiProperty()
   createdAt: Date;
