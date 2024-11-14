@@ -27,6 +27,9 @@ export class CreateAnalysisResponseDto {
   @ApiProperty()
   id: string;
 
+  @ApiProperty()
+  name: string;
+
   @ApiProperty({ required: true })
   images: string[];
 

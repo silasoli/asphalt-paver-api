@@ -16,6 +16,9 @@ export class Analysis {
   @Column('simple-array', { nullable: true })
   images: string[];
 
+  @Column({ nullable: false })
+  name: string;
+  
   @Column()
   address: string;
 

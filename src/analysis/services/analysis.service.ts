@@ -75,7 +75,7 @@ export class AnalysisService {
       ...dto,
       demoRating,
       demostration: demoRating.first,
-      //remover isso depois e fazer o usuario escolher a demonstração
+      //ssremover isso depois e fazer o usuario escolher a demonstração
     });
     await this.analysisRepository.save(analysis);
 

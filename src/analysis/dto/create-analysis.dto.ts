@@ -17,6 +17,9 @@ export class CreateAnalysisDto {
   @IsUrl({}, { each: true })
   images?: string[];
 
+  @ApiProperty({ required: true })
+  name: string;
+
   @ApiProperty({ required: true, example: '01001-000' })
   @IsPostalCode('BR')
   postalCode: string;

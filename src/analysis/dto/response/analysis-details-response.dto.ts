@@ -10,6 +10,7 @@ export class AnalysisDetailsResponseDto {
     const {
       id,
       images,
+      name,
       demostration,
       demoRating,
       characteristicIds,
@@ -25,6 +26,7 @@ export class AnalysisDetailsResponseDto {
     return {
       id,
       images,
+      name,
       demostration,
       demoRating,
       characteristicIds,
@@ -40,6 +42,9 @@ export class AnalysisDetailsResponseDto {
 
   @ApiProperty()
   id: string;
+
+  @ApiProperty()
+  name: string;
 
   @ApiProperty({ required: true })
   images: string[];
