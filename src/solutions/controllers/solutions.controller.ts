@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { CreateSolutionDto } from '../dto/create-solution.dto';
 import { UpdateSolutionDto } from '../dto/update-solution.dto';
@@ -23,6 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { SolutionResponseDto } from '../dto/solution-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
+import { FilterSolutionsDto } from '../dto/solutions-filter.dto';
 
 @ApiBearerAuth()
 @ApiTags('Solutions')
@@ -47,8 +49,10 @@ export class SolutionsController {
     type: [SolutionResponseDto],
   })
   @Get()
-  public findAll(): Promise<SolutionResponseDto[]> {
-    return this.solutionsService.findAll();
+  public findAll(
+    @Query() dto: FilterSolutionsDto,
+  ): Promise<SolutionResponseDto[]> {
+    return this.solutionsService.findAll(dto);
   }
 
   @ApiOperation({ summary: 'Obter solução por ID' })

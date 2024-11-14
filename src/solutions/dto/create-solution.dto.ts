@@ -15,5 +15,5 @@ export class CreateSolutionDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  demonstrations_id: string;
+  demonstrationId: string;
 }

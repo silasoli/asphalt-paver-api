@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { CausesService } from '../services/causes.service';
 import { CreateCauseDto } from '../dto/create-cause.dto';
@@ -23,6 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { CauseResponseDto } from '../dto/cause-response.dto';
 import { IDPostgresQueryDTO } from '../../common/dto/id-postgres-query.dto';
+import { FilterCausesDto } from '../dto/causes-filter.dto';
 @ApiBearerAuth()
 @ApiTags('Causes')
 @Controller('causes')
@@ -46,8 +48,8 @@ export class CausesController {
     type: [CauseResponseDto],
   })
   @Get()
-  public findAll(): Promise<CauseResponseDto[]> {
-    return this.causesService.findAll();
+  public findAll(@Query() dto: FilterCausesDto): Promise<CauseResponseDto[]> {
+    return this.causesService.findAll(dto);
   }
 
   @ApiOperation({ summary: 'Obter causa por ID' })

@@ -15,5 +15,5 @@ export class CreateCauseDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  demonstrations_id: string;
+  demonstrationId: string;
 }

@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateCauseDto } from '../dto/create-cause.dto';
 import { UpdateCauseDto } from '../dto/update-cause.dto';
 import { Causes } from '../../database/entities/causes.entity';
 import { CauseResponseDto } from '../dto/cause-response.dto';
+import { FilterCausesDto } from '../dto/causes-filter.dto';
+import { DemonstrationsService } from '../../demonstrations/services/demonstrations.service';
 
 //valid: validar not found no create, no update e validar repetição de nome.
 
@@ -13,18 +15,34 @@ export class CausesService {
   constructor(
     @InjectRepository(Causes)
     private causesRepository: Repository<Causes>,
+    private demonstrationsService: DemonstrationsService,
   ) {}
 
   public async create(dto: CreateCauseDto): Promise<CauseResponseDto> {
-    const cause = this.causesRepository.create(dto);
+    const demonstration = await this.demonstrationsService.findOne(
+      dto.demonstrationId,
+    );
+
+    const cause = this.causesRepository.create({
+      ...dto,
+      demonstration,
+    });
 
     const savedCause = await this.causesRepository.save(cause);
 
     return new CauseResponseDto(savedCause);
   }
 
-  public async findAll(): Promise<CauseResponseDto[]> {
-    const causes = await this.causesRepository.find();
+  public async findAll(dto: FilterCausesDto): Promise<CauseResponseDto[]> {
+    const where: FindOptionsWhere<Causes> = {};
+
+    if (dto.demonstrationId) {
+      where.demonstration = { id: dto.demonstrationId };
+    }
+
+    const causes = await this.causesRepository.find({
+      where
+    });
 
     return causes.map((cause) => new CauseResponseDto(cause));
   }

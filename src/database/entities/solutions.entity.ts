@@ -13,10 +13,10 @@ export class Solutions {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({  nullable: false })
+  @Column({ nullable: false })
   description: string;
 
-  @Column({  nullable: false })
+  @Column({ nullable: false })
   name: string;
 
   @ManyToOne(() => Demonstrations, (demonstration) => demonstration.solutions, {
