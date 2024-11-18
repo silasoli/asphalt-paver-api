@@ -41,7 +41,7 @@ export class SolutionsService {
     }
 
     const solutions = await this.solutionsRepository.find({
-      where
+      where,
     });
 
     return solutions.map((solution) => new SolutionResponseDto(solution));
