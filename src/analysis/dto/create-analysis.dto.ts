@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
   IsArray,
+  IsNotEmpty,
   IsOptional,
   IsPostalCode,
   IsString,
@@ -18,6 +19,7 @@ export class CreateAnalysisDto {
   images?: string[];
 
   @ApiProperty({ required: true })
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({ required: true, example: '01001-000' })
