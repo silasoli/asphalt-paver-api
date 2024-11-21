@@ -98,6 +98,7 @@ export class CloudFlareService {
 
       return new UploadImgCloudFlareResponseDto(data);
     } catch (error) {
+      return error
       this.logger.error('Erro ao fazer upload da imagem:', error.message);
       throw CLOUD_FLARE_ERRORS.UPLOAD_IMAGE;
     }
