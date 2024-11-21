@@ -67,6 +67,7 @@ export class CloudFlareService {
   async uploadImage(
     file: Express.Multer.File,
   ): Promise<UploadImgCloudFlareResponseDto> {
+    console.log(file);
     // this.validUploadImage(file);
 
     const filename = file.originalname;
