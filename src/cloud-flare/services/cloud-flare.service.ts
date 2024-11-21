@@ -64,6 +64,45 @@ export class CloudFlareService {
   //   }
   // }
 
+  async uploadImage2(file: {
+    originalname: string;
+    mimetype: string;
+    buffer: Buffer;
+    size: number;
+  }): Promise<UploadImgCloudFlareResponseDto> {
+    // this.validUploadImage(file);
+
+    const { originalname, mimetype, buffer } = file;
+
+    try {
+      const formData = new FormData();
+      formData.append('file', buffer, {
+        filename: originalname,
+        contentType: mimetype,
+      });
+
+      const response = await lastValueFrom(
+        this.httpService.post(
+          `https://api.cloudflare.com/client/v4/accounts/${this.accountId}/images/v1`,
+          formData,
+          {
+            headers: {
+              ...formData.getHeaders(),
+              Authorization: this.apiToken,
+            },
+          },
+        ),
+      );
+
+      const data = response.data.result;
+
+      return new UploadImgCloudFlareResponseDto(data);
+    } catch (error) {
+      this.logger.error('Erro ao fazer upload da imagem:', error.message);
+      throw CLOUD_FLARE_ERRORS.UPLOAD_IMAGE;
+    }
+  }
+
   async uploadImage(
     file: Express.Multer.File,
   ): Promise<UploadImgCloudFlareResponseDto> {

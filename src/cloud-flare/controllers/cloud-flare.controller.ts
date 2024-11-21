@@ -16,6 +16,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiOperation,
+  ApiProperty,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -36,11 +37,48 @@ export interface FileInfo {
   buffer: Buffer;
 }
 
+export class UploadImgBase64Dto {
+  @ApiProperty({ description: 'Base64 encoded image string' })
+  // @IsNotEmpty()
+  // @IsBase64()
+  base64Image: string;
+
+  @ApiProperty({ description: 'Image file name' })
+  // @IsNotEmpty()
+  // @IsString()
+  fileName: string;
+
+  @ApiProperty({ description: 'Image MIME type (e.g., image/png, image/jpeg)' })
+  // @IsNotEmpty()
+  // @IsString()
+  mimeType: string;
+}
+
 @ApiBearerAuth()
 @ApiTags('Images')
 @Controller('image')
 export class CloudFlareController {
   constructor(private readonly service: CloudFlareService) {}
+
+  @Post('upload-base64')
+  @ApiConsumes('application/json')
+  @ApiOperation({ summary: 'Upload an image encoded in Base64' })
+  @ApiBody({ type: UploadImgBase64Dto })
+  async uploadBase64(
+    @Body() uploadImgBase64Dto: UploadImgBase64Dto,
+  ): Promise<UploadImgCloudFlareResponseDto> {
+    const { base64Image, fileName, mimeType } = uploadImgBase64Dto;
+
+    // Convert Base64 to Buffer
+    const fileBuffer = Buffer.from(base64Image, 'base64');
+
+    return this.service.uploadImage2({
+      originalname: fileName,
+      mimetype: mimeType,
+      buffer: fileBuffer,
+      size: fileBuffer.length,
+    });
+  }
 
   @Post('upload/alternative')
   @UseInterceptors(FileInterceptor2())
